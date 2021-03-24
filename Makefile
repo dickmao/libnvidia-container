@@ -130,7 +130,7 @@ LDLIBS   := $(LDLIBS)
 # Library flags (recursively expanded to handle target-specific flags)
 LIB_CPPFLAGS       = -DNV_LINUX -isystem $(DEPS_DIR)$(includedir) -include $(BUILD_DEFS)
 LIB_CFLAGS         = -fPIC
-LIB_LDFLAGS        = -L$(DEPS_DIR)$(libdir) -shared -Wl,-soname=$(LIB_SONAME)
+LIB_LDFLAGS        = -L$(DEPS_DIR)$(libdir) -shared
 LIB_LDLIBS_STATIC  = -l:libnvidia-modprobe-utils.a
 LIB_LDLIBS_SHARED  = -ldl -lcap
 ifeq ($(WITH_LIBELF), yes)
