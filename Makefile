@@ -194,7 +194,7 @@ $(BIN_OBJS): %.o: %.c | shared
 
 $(LIB_SHARED): $(LIB_OBJS)
 	$(MKDIR) -p $(DEBUG_DIR)
-	$(CC) $(LIB_CFLAGS) $(LIB_CPPFLAGS) $(LIB_LDFLAGS) $(OUTPUT_OPTION) $^ $(LIB_SCRIPT) $(LIB_LDLIBS)
+	$(CC) $(LIB_CFLAGS) $(LIB_CPPFLAGS) $(LIB_LDFLAGS) $(OUTPUT_OPTION) $^ -T $(LIB_SCRIPT) $(LIB_LDLIBS)
 	$(OBJCPY) --only-keep-debug $@ $(LIB_SONAME)
 	$(OBJCPY) --add-gnu-debuglink=$(LIB_SONAME) $@
 	$(MV) $(LIB_SONAME) $(DEBUG_DIR)

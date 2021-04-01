@@ -53,7 +53,6 @@ install: all
 	$(INSTALL) -d -m 755 $(addprefix $(DESTDIR),$(includedir) $(libdir))
 	$(INSTALL) -m 644 $(LIB_INCS) $(DESTDIR)$(includedir)
 	$(INSTALL) -m 644 $(LIB_STATIC) $(DESTDIR)$(libdir)
-	echo fooness
 
 clean:
 	$(RM) $(LIB_OBJS) $(LIB_STATIC)
