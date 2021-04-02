@@ -160,6 +160,9 @@ BIN_CPPFLAGS       = -include $(BUILD_DEFS) $(CPPFLAGS)
 BIN_CFLAGS         = -I$(SRCS_DIR) -fPIE -flto $(CFLAGS)
 BIN_LDFLAGS        = -L. -pie $(LDFLAGS) -Wl,-rpath='$$ORIGIN/../$$LIB'
 BIN_LDLIBS         = -l:$(LIB_SHARED) -lcap $(LDLIBS)
+ifeq ($(WITH_TIRPC), yes)
+BIN_CPPFLAGS       += -isystem $(DEPS_DIR)$(includedir)/tirpc -DWITH_TIRPC
+endif
 
 $(word 1,$(LIB_RPC_SRCS)): RPCGENFLAGS=-h
 $(word 2,$(LIB_RPC_SRCS)): RPCGENFLAGS=-c
