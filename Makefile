@@ -123,7 +123,7 @@ CFLAGS   := -std=gnu11 -O2 -g -fdata-sections -ffunction-sections -fstack-protec
             -Wall -Wextra -Wcast-align -Wpointer-arith -Wmissing-prototypes -Wnonnull \
             -Wwrite-strings -Wlogical-op -Wformat=2 -Wmissing-format-attribute -Winit-self -Wshadow \
             -Wstrict-prototypes -Wunreachable-code -Wconversion -Wsign-conversion \
-            -Wno-unknown-warning-option -Wno-format-extra-args -Wno-gnu-alignof-expression $(CFLAGS)
+            -Wno-unknown-warning-option -Wno-format-extra-args -Wno-gnu-alignof-expression $(subst -Os,,$(CFLAGS))
 LDFLAGS  := -Wl,-zrelro -Wl,-znow -Wl,-zdefs -Wl,--gc-sections $(LDFLAGS)
 LDLIBS   := $(LDLIBS)
 
