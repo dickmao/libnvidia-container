@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2021, NVIDIA CORPORATION.  All rights reserved.
+# Copyright (c) 2018-2021, NVIDIA CORPORATION.  All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,13 +23,14 @@ WITH_SECCOMP ?= yes
 
 ##### Global definitions #####
 
-export PREFIX      ?= /usr/local
-export exec_prefix = $(PREFIX)
+export SYSROOT     ?= /
+export prefix      = ${SYSROOT}usr/local
+export exec_prefix = $(prefix)
 export bindir      = $(exec_prefix)/bin
 export libdir      = $(exec_prefix)/lib
-export docdir      = $(PREFIX)/share/doc
-export libdbgdir   = $(PREFIX)/lib/debug$(libdir)
-export includedir  = $(PREFIX)/include
+export docdir      = $(prefix)/share/doc
+export libdbgdir   = $(prefix)/lib/debug$(libdir)
+export includedir  = $(prefix)/include
 export pkgconfdir  = $(libdir)/pkgconfig
 
 export PKG_DIR     ?= $(CURDIR)/pkg
@@ -128,7 +129,7 @@ LDFLAGS  := -Wl,-zrelro -Wl,-znow -Wl,-zdefs -Wl,--gc-sections $(LDFLAGS)
 LDLIBS   := $(LDLIBS)
 
 # Library flags (recursively expanded to handle target-specific flags)
-LIB_CPPFLAGS       = -DNV_LINUX -isystem $(DEPS_DIR)/include -include $(BUILD_DEFS)
+LIB_CPPFLAGS       = -DNV_LINUX -isysroot="${SYSROOT}" --sysroot="${SYSROOT}" -isystem $(DEPS_DIR)/include -include $(BUILD_DEFS)
 LIB_CFLAGS         = -fPIC
 LIB_LDFLAGS        = -L$(DEPS_DIR)/lib -shared
 LIB_LDLIBS_STATIC  = -l:libnvidia-modprobe-utils.a
@@ -299,7 +300,7 @@ distclean: clean
 	$(RM) $(LIB_RPC_SRCS) $(LIB_STATIC) $(LIB_SHARED) $(BIN_NAME)
 
 deb: DESTDIR:=$(DIST_DIR)/$(LIB_NAME)_$(VERSION)_$(ARCH)
-deb: PREFIX:=/usr
+deb: prefix:=/usr
 deb: libdir:=/usr/lib/@DEB_HOST_MULTIARCH@
 deb: install
 	$(CP) -T $(PKG_DIR)/deb $(DESTDIR)/debian
