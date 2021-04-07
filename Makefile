@@ -129,9 +129,9 @@ LDFLAGS  := -Wl,-zrelro -Wl,-znow -Wl,-zdefs -Wl,--gc-sections $(LDFLAGS)
 LDLIBS   := $(LDLIBS)
 
 # Library flags (recursively expanded to handle target-specific flags)
-LIB_CPPFLAGS       = -DNV_LINUX -isysroot="${SYSROOT}" --sysroot="${SYSROOT}" -isystem $(DEPS_DIR)/include -include $(BUILD_DEFS)
+LIB_CPPFLAGS       = -DNV_LINUX -isysroot="${SYSROOT}" --sysroot="${SYSROOT}" -isystem $(DEPS_DIR)$(includedir) -include $(BUILD_DEFS)
 LIB_CFLAGS         = -fPIC
-LIB_LDFLAGS        = -L$(DEPS_DIR)/lib -shared
+LIB_LDFLAGS        = -L$(DEPS_DIR)$(libdir) -shared
 LIB_LDLIBS_STATIC  = -l:libnvidia-modprobe-utils.a
 LIB_LDLIBS_SHARED  = -ldl -lcap
 ifeq ($(WITH_LIBELF), yes)
@@ -141,7 +141,7 @@ else
 LIB_LDLIBS_STATIC  += -l:libelf.a
 endif
 ifeq ($(WITH_TIRPC), yes)
-LIB_CPPFLAGS       += -isystem $(DEPS_DIR)/include/tirpc -DWITH_TIRPC
+LIB_CPPFLAGS       += -isystem $(DEPS_DIR)$(includedir)/tirpc -DWITH_TIRPC
 LIB_LDLIBS_STATIC  += -l:libtirpc.a
 LIB_LDLIBS_SHARED  += -lpthread
 endif
@@ -162,7 +162,7 @@ BIN_CFLAGS         = -I$(SRCS_DIR) -fPIE -flto $(CFLAGS)
 BIN_LDFLAGS        = -L. -pie $(LDFLAGS) -Wl,-rpath='$$ORIGIN/../$$LIB'
 BIN_LDLIBS         = -l:$(LIB_SHARED) -lcap $(LDLIBS)
 ifeq ($(WITH_TIRPC), yes)
-BIN_CPPFLAGS       += -isystem $(DEPS_DIR)/include/tirpc -DWITH_TIRPC
+BIN_CPPFLAGS       += -isystem $(DEPS_DIR)$(includedir)/tirpc -DWITH_TIRPC
 endif
 
 $(word 1,$(LIB_RPC_SRCS)): RPCGENFLAGS=-h
@@ -206,7 +206,7 @@ $(LIB_SHARED): $(LIB_OBJS)
 
 $(LIB_STATIC_OBJ): $(LIB_OBJS)
 	# FIXME Handle user-defined LDFLAGS and LDLIBS
-	$(LD) -d -r --exclude-libs ALL -L$(DEPS_DIR)/lib $(OUTPUT_OPTION) $^ $(LIB_LDLIBS_STATIC)
+	$(LD) -d -r --exclude-libs ALL -L$(DEPS_DIR)$(libdir) $(OUTPUT_OPTION) $^ $(LIB_LDLIBS_STATIC)
 	$(OBJCPY) --localize-hidden $@
 	$(STRIP) --strip-unneeded -R .comment $@
 
