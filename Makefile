@@ -23,13 +23,13 @@ WITH_SECCOMP ?= yes
 
 ##### Global definitions #####
 
-export prefix      = /usr/local
-export exec_prefix = $(prefix)
+export PREFIX      ?= /usr/local
+export exec_prefix = $(PREFIX)
 export bindir      = $(exec_prefix)/bin
 export libdir      = $(exec_prefix)/lib
-export docdir      = $(prefix)/share/doc
-export libdbgdir   = $(prefix)/lib/debug$(libdir)
-export includedir  = $(prefix)/include
+export docdir      = $(PREFIX)/share/doc
+export libdbgdir   = $(PREFIX)/lib/debug$(libdir)
+export includedir  = $(PREFIX)/include
 export pkgconfdir  = $(libdir)/pkgconfig
 
 export PKG_DIR     ?= $(CURDIR)/pkg
@@ -299,7 +299,7 @@ distclean: clean
 	$(RM) $(LIB_RPC_SRCS) $(LIB_STATIC) $(LIB_SHARED) $(BIN_NAME)
 
 deb: DESTDIR:=$(DIST_DIR)/$(LIB_NAME)_$(VERSION)_$(ARCH)
-deb: prefix:=/usr
+deb: PREFIX:=/usr
 deb: libdir:=/usr/lib/@DEB_HOST_MULTIARCH@
 deb: install
 	$(CP) -T $(PKG_DIR)/deb $(DESTDIR)/debian
